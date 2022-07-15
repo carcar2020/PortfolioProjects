@@ -5,23 +5,24 @@ FROM PProject..CovidDeath
 ORDER BY 3, 4;
 
 
---Select Data that we are going to be using
+--Selecting Data that will be used.
 
-SELECT location, date, total_cases, new_cases, total_deaths, population 
+SELECT location, date, total_cases, total_cases, total_deaths, population 
 FROM PProject..CovidDeath
 ORDER BY 1 , 2
 
--- Looking at Total Cases Vs Total Deaths
--- Shows the probability of dying if you get Covid 19 in your country
+
+-- Total Cases Vs Total Deaths
+-- Shows the probability of dying if you get Covid 19 in your Country(USA)
 SELECT location, date, total_cases,total_deaths, (total_deaths/total_cases)* 100 AS DeathPercentage
-FROM PProject..CovidDeath
 WHERE location like '%states%'
+FROM PProject..CovidDeath
 ORDER BY 1 , 2
 
 
 
--- Looking at the Total Cases Vs Population
---Shows what percentage of Population Got Covid 19
+-- Total Cases Vs Population
+--Shows what percentage of Population Got Covid 19(USA)
 
 SELECT location, date, population, total_cases,total_deaths, (total_cases/population)* 100 AS totalcases_to_population_Percentage
 FROM PProject..CovidDeath
@@ -29,7 +30,7 @@ WHERE location like '%states%'
 ORDER BY 1 , 2
 
 
---Looking at Countries with Highest Infection Rate Compared to Population
+--Looking at Countries with Highest Infection Rate Compared to Population(GLOBAL)
 SELECT location, population, MAX(total_cases) AS HighestInfectionCount, MAX((total_cases/population))* 100 AS PercentPoulationInfected
 FROM PProject..CovidDeath
 GROUP BY location, population
