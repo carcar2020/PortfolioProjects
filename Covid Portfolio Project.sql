@@ -1,5 +1,4 @@
-
-
+------------------------------------------------------------BEGINNING OF DATA EXPLORATION-----------------------------------------------------------------------------
 SELECT * 
 FROM PProject..CovidDeath
 ORDER BY 3, 4;
@@ -105,3 +104,32 @@ ON dea.location = vac.location
 	and dea.date = vac.date
 WHERE dea.continent IS NOT NULL
 --ORDER BY 2, 3
+--------------------------------------------------------------ENDING OF DATA EXPLORATION---------------------------------------------------------------------
+
+
+
+--------------------------------------------------Beginning of Queries Used for Tableau Data Visualizations Regarding North America Data Only ------------------
+
+-- Breaking down the total cases and total deaths in North America by country
+SELECT continent, location, date, total_cases, CAST(total_deaths AS int) AS total_deaths
+FROM PProject..CovidDeath
+WHERE continent = 'North America' 
+ORDER BY CAST(total_deaths AS int) DESC;
+
+
+-- Death Percentage based on total cases and total deaths of location
+SELECT location, MAX(total_cases) AS TotalInfected, MAX(CAST(total_deaths AS int)) AS TotalDeathts, MAX(CAST(total_deaths AS int))/MAX(total_cases)*100 AS DeathPercentage
+FROM PProject..CovidDeath
+WHERE continent IN ( SELECT continent FROM PProject..CovidDeath WHERE continent = 'North America')
+GROUP BY location
+ORDER BY DeathPercentage DESC;
+
+
+-- Infection Percentage Based on population size
+SELECT location, population, MAX(total_cases) HighestInfectionCount, MAX((total_cases/population))*100 AS InfectionPercentage
+FROM PProject..CovidDeath
+WHERE continent IN ( SELECT continent FROM PProject..CovidDeath WHERE continent = 'North America') 
+GROUP BY location, population
+ORDER BY InfectionPercentage DESC;
+------------------------------------------Ending Queries Used for Tableau Data Visualizations Regarding North America Data Only-----------------------------------------
+
